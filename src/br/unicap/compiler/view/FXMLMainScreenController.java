@@ -26,11 +26,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
+import br.unicap.compiler.syntax.Parser;
 
 public class FXMLMainScreenController implements Initializable {
 
@@ -94,7 +94,6 @@ public class FXMLMainScreenController implements Initializable {
 
             Scanner sc = new Scanner(ca.getText(), filename);
             Token token;
-
             do {
                 token = sc.nextToken();
                 if (token != null) {
@@ -109,8 +108,6 @@ public class FXMLMainScreenController implements Initializable {
                     resultArea.setStyle("-fx-text-fill: #B82524");
                 }
             } else {
-                data = FXCollections.observableArrayList(tokens);
-                table.setItems(data);
                 resultArea.setText(tokens.size() + " identified tokens and no lexical errors found.\n\nSUCCESSFULLY BUILT!");
                 if (isDark) {
                     resultArea.setStyle("-fx-text-fill: #8DE38D");
@@ -119,6 +116,36 @@ public class FXMLMainScreenController implements Initializable {
 
                 }
             }
+            data = FXCollections.observableArrayList(tokens);
+            table.setItems(data);
+
+        }
+    }
+    
+    @FXML
+    private void runSintatica(ActionEvent event) {
+
+        if (codeArea != null) {
+
+            tokens = new ArrayList<>();
+            resultArea.setText("");
+            data = FXCollections.observableArrayList(tokens);
+            table.setItems(data);
+
+            Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
+            //cast pra receber o codeArea que esta dentro de scroll
+            scroll = (VirtualizedScrollPane) selectedTab.getContent();
+            //CodeArea ca = (CodeArea) selectedTab.getContent();
+            CodeArea ca = (CodeArea) scroll.getContent();
+
+            filename = selectedTab.getText();
+
+            Scanner sc = new Scanner(ca.getText(), filename);
+            
+            Parser ps = new Parser(sc);
+            ps.BLK_S();
+            System.out.println("Compilado com sucesso!");
+            
         }
     }
     //******************
@@ -260,7 +287,7 @@ public class FXMLMainScreenController implements Initializable {
         tokenCol.setMinWidth(170);
         tokenCol.setCellValueFactory(new PropertyValueFactory<>("token"));
         typeCol.setMinWidth(222);
-        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("typeColor"));
         typeCol.setSortable(false);
         tokenCol.setSortable(false);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);

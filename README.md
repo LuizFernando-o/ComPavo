@@ -2,6 +2,8 @@
 ## _A minimalist compiler_
 Work done for the Compilers course at the Universidade Católica de Pernambuco (UNICAP).
 
+[![Doc](https://img.shields.io/static/v1?label=Documentation&message=1.0.0&color=blue&style=for-the-badge")](https://afkaro.github.io/Pavo/)
+
 Students:
 - Karolayne Teixeira da Silva ([AFKaro](https://github.com/AFKaro))
 - Luiz Fernando Leite ([LuizFernando-o](https://github.com/LuizFernando-o))
